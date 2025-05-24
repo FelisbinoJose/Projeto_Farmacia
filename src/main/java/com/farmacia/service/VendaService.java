@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+
 @Service
 public class VendaService {
     @Autowired
@@ -37,5 +39,9 @@ public class VendaService {
         Venda venda = new Venda(medicamento, cliente, quantidade, LocalDate.now());
 
         return vendaRepository.save(venda);
+    }
+
+    public List<Venda> listarVendas() {
+        return vendaRepository.findAll();
     }
 }

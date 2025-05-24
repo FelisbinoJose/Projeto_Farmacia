@@ -28,34 +28,38 @@ public class Medicamento {
     public Medicamento(String paracetamol, String ems, int i, LocalDate localDate, Classificacao classificacao) {
     }
 
-
-    public String validar(String txt,String nomeDoCampo){
-        if(txt==null|| txt.trim().isEmpty())throw new IllegalArgumentException("Campo " + nomeDoCampo + " não pode ser nulo ou vazio.");
+    public String validar(String txt, String nomeDoCampo) {
+        if (txt == null || txt.trim().isEmpty())
+            throw new IllegalArgumentException("Campo " + nomeDoCampo + " não pode ser nulo ou vazio.");
         return txt;
     }
 
-
     public void setNomeComercial(String nomeComercial) {
 
-        this.nomeComercial = validar(nomeComercial,"Nome Comercial");
+        this.nomeComercial = validar(nomeComercial, "Nome Comercial");
     }
 
-    public void setfabricante(String fabricante) {
-        fabricante = validar(fabricante,"Fabricante");
+    public void setFabricante(String fabricante) {
+        this.fabricante = validar(fabricante, "Fabricante");
     }
-    private final static int MENOR_DO_QUE_ZERO=0;
+
+    private final static int MENOR_DO_QUE_ZERO = 0;
+
     public void setPreco(double preco) {
-        if (lote <= MENOR_DO_QUE_ZERO) throw new IllegalArgumentException("Preço deve ser maior que zero.");
+        if (preco <= MENOR_DO_QUE_ZERO)
+            throw new IllegalArgumentException("Preço deve ser maior que zero.");
         this.preco = preco;
     }
+
     public void setLote(int lote) {
-        if (lote <= MENOR_DO_QUE_ZERO) throw new IllegalArgumentException("Lote deve ser maior que zero.");
+        if (lote <= MENOR_DO_QUE_ZERO)
+            throw new IllegalArgumentException("Lote deve ser maior que zero.");
         this.lote = lote;
     }
 
     public void setDate(LocalDate date) {
-        if (date == null || date.isBefore(LocalDate.now())) {
-            throw new IllegalArgumentException("Data de validade deve ser futura.");
+        if (date == null || date.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Data da venda deve ser hoje ou anterior.");
         }
         this.date = date;
     }
