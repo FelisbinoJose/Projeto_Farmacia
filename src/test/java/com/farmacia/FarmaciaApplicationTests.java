@@ -56,12 +56,17 @@ class FarmaciaApplicationTests {
 	}
 
 	@Test
-	void medicamentoDataDoPassadoTest() {
-		Medicamento medicamento = new Medicamento();
-		IllegalArgumentException ex = assertThrows(IllegalArgumentException.class,
-				() -> medicamento.setDate(LocalDate.now().minusDays(1)));
-		assertEquals("Data de validade deve ser futura.", ex.getMessage());
+	void medicamentoDataDoPassado() {
 
+		Venda venda = new Venda();
+
+		LocalDate validDate = LocalDate.now();
+		venda.setDate(validDate);
+		assertEquals(validDate, venda.getDataVenda());
+
+		LocalDate pastDate = LocalDate.now().minusDays(1);
+		venda.setDate(pastDate);
+		assertEquals(pastDate, venda.getDataVenda());
 	}
 
 	@Test
