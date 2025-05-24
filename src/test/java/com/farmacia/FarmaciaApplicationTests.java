@@ -1,18 +1,16 @@
 package com.farmacia;
 
-import com.farmacia.model.Classificacao;
+
 import com.farmacia.model.Cliente;
 import com.farmacia.model.Medicamento;
 import com.farmacia.model.Venda;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.InstantSource;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
 
 @SpringBootTest
 class FarmaciaApplicationTests {
@@ -99,9 +97,6 @@ class FarmaciaApplicationTests {
 		IllegalArgumentException ex=assertThrows(IllegalArgumentException.class,()->venda.setDate(LocalDate.now().plusDays(1)));
 		assertEquals("Data da venda deve ser hoje ou anterior.",ex.getMessage());
 	}
-
-
-
 
 
 }

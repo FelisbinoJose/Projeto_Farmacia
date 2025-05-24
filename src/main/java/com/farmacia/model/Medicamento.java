@@ -1,5 +1,6 @@
 package com.farmacia.model;
 
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,13 +12,21 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class Medicamento {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nomeComercial;
     private String fabricante;
     private double preco;
     private int lote;
     private LocalDate date;
+    @Enumerated(EnumType.STRING)
     private Classificacao classificacao;
+
+    public Medicamento(String paracetamol, String ems, int i, LocalDate localDate, Classificacao classificacao) {
+    }
 
 
     public String validar(String txt,String nomeDoCampo){

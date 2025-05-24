@@ -1,6 +1,9 @@
 package com.farmacia.model;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,18 +14,25 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @Getter
+@Entity
 public class Venda {
+    @Id
+    private Long id;
+   @ManyToOne
     private Medicamento medicamento;
+   @ManyToOne
     private Cliente cliente;
     private int quantidade;
     private LocalDate dataVenda;
 
-    public Venda(LocalDate date, int quantidade, Cliente cliente, Medicamento medicamento) {
+    public Venda( Medicamento medicamento,Cliente cliente,int quantidade, LocalDate dateVenda) {
         setMedicamento(medicamento);
         setCliente(cliente);
         setQuantidade(quantidade);
-        setDate(date);
+        setDate(dateVenda);
     }
+
+
 
     public void setMedicamento(Medicamento medicamento) {
         if(medicamento==null) {
