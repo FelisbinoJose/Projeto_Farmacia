@@ -1,4 +1,4 @@
-package com.farmacia.farmacia;
+package com.farmacia;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,6 +8,7 @@ public class FarmaciaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FarmaciaApplication.class, args);
+		System.out.println("Farmacia Application Started");
 	}
 
 }
