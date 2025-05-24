@@ -17,23 +17,23 @@ public class MedicamentoController {
 
     @PostMapping
     public Medicamento cadastrarMedicamento(@RequestBody Medicamento medicamento) {
-        return medicamentoService.cadastrarMedicamento(medicamento);
+        return medicamentoService.salvar(medicamento);
     }
 
     @GetMapping
     public List<Medicamento> listarMedicamentos() {
-        return medicamentoService.listarMedicamentos();
+        return medicamentoService.listarTodos();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Medicamento> buscarMedicamento(@PathVariable Long id) {
-        Optional<Medicamento> medicamento = medicamentoService.buscarMedicamento(id);
+        Optional<Medicamento> medicamento = medicamentoService.buscarPorId(id);
         return medicamento.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarMedicamento(@PathVariable Long id) {
-        medicamentoService.deletarMedicamento(id);
+        medicamentoService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
