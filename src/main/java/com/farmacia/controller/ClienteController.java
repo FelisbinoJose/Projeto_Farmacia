@@ -17,23 +17,23 @@ public class ClienteController {
 
     @PostMapping
     public Cliente cadastrarCliente(@RequestBody Cliente cliente) {
-        return clienteService.cadastrarCliente(cliente);
+        return clienteService.salvar(cliente);
     }
 
     @GetMapping
     public List<Cliente> listarClientes() {
-        return clienteService.listarClientes();
+        return clienteService.listarTodos();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> buscarCliente(@PathVariable Long id) {
-        Optional<Cliente> cliente = clienteService.buscarCliente(id);
+        Optional<Cliente> cliente = clienteService.buscarPorId(id);
         return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarCliente(@PathVariable Long id) {
-        clienteService.deletarCliente(id);
+        clienteService.deletar(id);
         return ResponseEntity.noContent().build();
     }
 }
