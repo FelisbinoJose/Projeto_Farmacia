@@ -3,6 +3,7 @@ package com.farmacia;
 import com.farmacia.model.Classificacao;
 import com.farmacia.model.Cliente;
 import com.farmacia.model.Medicamento;
+import com.farmacia.model.Venda;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -68,6 +69,39 @@ class FarmaciaApplicationTests {
 		IllegalArgumentException ex=assertThrows(IllegalArgumentException.class,()->medicamento.setClassificacao(null));
 		assertEquals("Classificação não pode ser nula.",ex.getMessage());
 	}
+	@Test
+	void medicamentoPrecoNegativoTest(){
+		Medicamento medicamento=new Medicamento();
+		IllegalArgumentException ex=assertThrows(IllegalArgumentException.class,()->medicamento.setPreco(-1));
+		assertEquals("Preço deve ser maior que zero.",ex.getMessage());
+	}
+
+	@Test
+	void vendaMedimentoNUllTest(){
+		Venda venda=new Venda();
+		IllegalArgumentException ex=assertThrows(IllegalArgumentException.class,()->venda.setMedicamento(null));
+		assertEquals("Medicamento Não pode ser null.",ex.getMessage());
+	}
+	void vendaClienteNUllTest(){
+		Venda venda=new Venda();
+		IllegalArgumentException ex=assertThrows(IllegalArgumentException.class,()->venda.setCliente(null));
+		assertEquals("Cliente Não pode ser null.",ex.getMessage());
+	}
+	@Test
+	void vendaQuantidadeMenorQueZeroTest(){
+		Venda venda=new Venda();
+		IllegalArgumentException ex=assertThrows(IllegalArgumentException.class,()->venda.setQuantidade(-1));
+		assertEquals("Quantidade de pedido Deve ser maior do que zero.",ex.getMessage());
+	}
+	@Test
+	void DataDeVendaComDiaAnteriorTest(){
+		Venda venda=new Venda();
+		IllegalArgumentException ex=assertThrows(IllegalArgumentException.class,()->venda.setDate(LocalDate.now().plusDays(1)));
+		assertEquals("Data da venda deve ser hoje ou anterior.",ex.getMessage());
+	}
+
+
+
 
 
 }

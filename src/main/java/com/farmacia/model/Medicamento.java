@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class Medicamento {
     private String nomeComercial;
     private String fabricante;
+    private double preco;
     private int lote;
     private LocalDate date;
     private Classificacao classificacao;
@@ -33,9 +34,13 @@ public class Medicamento {
     public void setfabricante(String fabricante) {
         fabricante = validar(fabricante,"Fabricante");
     }
-
+    private final static int MENOR_DO_QUE_ZERO=0;
+    public void setPreco(double preco) {
+        if (lote <= MENOR_DO_QUE_ZERO) throw new IllegalArgumentException("Preço deve ser maior que zero.");
+        this.preco = preco;
+    }
     public void setLote(int lote) {
-        if (lote <= 0) throw new IllegalArgumentException("Lote deve ser maior que zero.");
+        if (lote <= MENOR_DO_QUE_ZERO) throw new IllegalArgumentException("Lote deve ser maior que zero.");
         this.lote = lote;
     }
 
