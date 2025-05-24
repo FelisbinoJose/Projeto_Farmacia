@@ -1,4 +1,7 @@
 package com.farmacia.repository;
 
-public class VendaRepository {
+import com.farmacia.model.Venda;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface VendaRepository extends JpaRepository<Venda, Long> {
 }
