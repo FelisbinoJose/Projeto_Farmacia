@@ -14,9 +14,9 @@ public class MedicamentoService {
     @Autowired
     private MedicamentoRepository medicamentoRepository;
 
-   public MedicamentoService(MedicamentoRepository medicamentoRepository){
-       this.medicamentoRepository=medicamentoRepository;
-   }
+    public MedicamentoService(MedicamentoRepository medicamentoRepository) {
+        this.medicamentoRepository = medicamentoRepository;
+    }
 
     public Medicamento salvar(Medicamento medicamento) {
         return medicamentoRepository.save(medicamento);
