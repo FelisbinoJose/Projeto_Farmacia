@@ -11,3 +11,4 @@ com\farmacia\controller\VendaController.class
 com\farmacia\model\Medicamento.class
 com\farmacia\repository\MedicamentoRepository.class
 com\farmacia\controller\ClienteController.class
+com\farmacia\model\Classificacao.class
