@@ -105,7 +105,40 @@
     <div id="vendas" class="tab-content">
         <div class="container">
             <h2>Registrar Nova Venda</h2>
-            <p>Funcionalidade de vendas em desenvolvimento.</p>
+            <form id="form-venda">
+                <div class="form-group">
+                    <label for="venda-cliente">Cliente:</label>
+                    <select id="venda-cliente" required>
+                        <option value="" disabled selected>Carregando clientes...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="venda-medicamento">Medicamento:</label>
+                    <select id="venda-medicamento" required>
+                        <option value="" disabled selected>Carregando medicamentos...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="venda-quantidade">Quantidade:</label>
+                    <input type="number" id="venda-quantidade" min="1" required>
+                </div>
+                <button type="submit" class="btn">Salvar Venda</button>
+            </form>
+        </div>
+        <div class="container">
+            <h2>Histórico de Vendas</h2>
+            <table id="tabela-vendas">
+                <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Medicamento</th>
+                    <th>Quantidade</th>
+                    <th>Data da Venda</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
     </div>
 </main>
