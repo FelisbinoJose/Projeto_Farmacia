@@ -58,8 +58,9 @@ public class Medicamento {
     }
 
     public void setDate(LocalDate date) {
-        if (date == null || date.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Data da venda deve ser hoje ou anterior.");
+        // Allow expiration date (validade) to be today or in the future
+        if (date == null || date.isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("Data de validade deve ser hoje ou posterior.");
         }
         this.date = date;
     }

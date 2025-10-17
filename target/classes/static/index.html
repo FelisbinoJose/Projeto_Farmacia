@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão da Farmácia</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>Sistema de Gerenciamento da Farmácia</h1>
+</header>
+
+<nav class="tab-nav">
+    <button class="tab-button active" onclick="openTab(event, 'medicamentos')">Medicamentos</button>
+    <button class="tab-button" onclick="openTab(event, 'clientes')">Clientes</button>
+    <button class="tab-button" onclick="openTab(event, 'vendas')">Registrar Venda</button>
+</nav>
+
+<main>
+    <div id="medicamentos" class="tab-content active">
+        <div class="container">
+            <h2>Cadastrar Novo Medicamento</h2>
+            <form id="form-medicamento">
+                <div class="form-group">
+                    <label for="med-nome-comercial">Nome Comercial:</label>
+                    <input type="text" id="med-nome-comercial" required>
+                </div>
+                <div class="form-group">
+                    <label for="med-fabricante">Fabricante:</label>
+                    <input type="text" id="med-fabricante" required>
+                </div>
+                <div class="form-group">
+                    <label for="med-preco">Preço (R$):</label>
+                    <input type="number" id="med-preco" step="0.01" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="med-lote">Lote:</label>
+                    <input type="number" id="med-lote" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label for="med-data">Data de Validade:</label>
+                    <input type="date" id="med-data" required>
+                </div>
+                <div class="form-group">
+                    <label for="med-classificacao">Classificação:</label>
+                    <select id="med-classificacao" required>
+                        <option value="" disabled selected>Selecione uma opção</option>
+                        <option value="CONTROLADO">Controlado</option>
+                        <option value="VENDA_LIVRE">Venda Livre</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">Salvar Medicamento</button>
+            </form>
+        </div>
+        <div class="container">
+            <h2>Lista de Medicamentos</h2>
+            <table id="tabela-medicamentos">
+                <thead>
+                <tr>
+                    <th>Nome Comercial</th>
+                    <th>Fabricante</th>
+                    <th>Preço</th>
+                    <th>Lote</th>
+                    <th>Data de Validade</th>
+                    <th>Classificação</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div id="clientes" class="tab-content">
+        <div class="container">
+            <h2>Cadastrar Novo Cliente</h2>
+            <form id="form-cliente">
+                <div class="form-group"><label for="cli-nome">Nome:</label><input type="text" id="cli-nome" required></div>
+                <div class="form-group"><label for="cli-cpf">CPF:</label><input type="text" id="cli-cpf" required></div>
+                <div class="form-group"><label for="cli-idade">Idade:</label><input type="number" id="cli-idade" min="0"></div>
+                <div class="form-group"><label for="cli-endereco">Endereço:</label><input type="text" id="cli-endereco"></div>
+
+                <button type="submit" class="btn">Salvar Cliente</button>
+            </form>
+        </div>
+        <div class="container">
+            <h2>Lista de Clientes</h2>
+            <table id="tabela-clientes">
+                <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Idade</th>
+                    <th>Endereço</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="vendas" class="tab-content">
+        <div class="container">
+            <h2>Registrar Nova Venda</h2>
+            <p>Funcionalidade de vendas em desenvolvimento.</p>
+        </div>
+    </div>
+</main>
+
+<footer><p>&copy; 2024 Projeto Farmácia</p></footer>
+<script src="script.js"></script>
+</body>
+</html>
