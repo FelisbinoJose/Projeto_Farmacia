@@ -205,6 +205,45 @@ document.addEventListener('DOMContentLoaded', () => {
         // Carrega o histórico de vendas
         carregarVendas();
     }
+    // --- LÓGICA DE PESQUISA (FILTRO) ---
+
+    // Filtro para a tabela de Medicamentos
+    document.getElementById('pesquisa-medicamento').addEventListener('input', function() {
+        const termoPesquisa = this.value.toLowerCase();
+        // Seleciona as linhas DO TBODY da tabela correta
+        const linhas = document.querySelectorAll('#tabela-medicamentos tbody tr');
+
+        linhas.forEach(linha => {
+            // Pega o texto da primeira coluna (Nome Comercial)
+            const nomeComercial = linha.cells[0].textContent.toLowerCase();
+            
+            if (nomeComercial.includes(termoPesquisa)) {
+                linha.style.display = ''; // Mostra a linha
+            } else {
+                linha.style.display = 'none'; // Esconde a linha
+            }
+        });
+    });
+
+    // Filtro para a tabela de Clientes
+    document.getElementById('pesquisa-cliente').addEventListener('input', function() {
+        const termoPesquisa = this.value.toLowerCase();
+        // Seleciona as linhas DO TBODY da tabela correta
+        const linhas = document.querySelectorAll('#tabela-clientes tbody tr');
+
+        linhas.forEach(linha => {
+            // Pega o texto da primeira (Nome) e segunda (CPF) colunas
+            const nome = linha.cells[0].textContent.toLowerCase();
+            const cpf = linha.cells[1].textContent.toLowerCase();
+            
+            if (nome.includes(termoPesquisa) || cpf.includes(termoPesquisa)) {
+                linha.style.display = ''; // Mostra a linha
+            } else {
+                linha.style.display = 'none'; // Esconde a linha
+            }
+        });
+    });
+
 
     carregarPagina(); // Chama a função principal que inicia tudo
 });

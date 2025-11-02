@@ -22,7 +22,9 @@
 </nav>
 
 <main>
+
     <div id="medicamentos" class="tab-content active">
+        
         <div class="container">
             <h2>Cadastrar Novo Medicamento</h2>
             <form id="form-medicamento">
@@ -57,8 +59,15 @@
                 <button type="submit" class="btn">Salvar Medicamento</button>
             </form>
         </div>
+
         <div class="container">
             <h2>Lista de Medicamentos</h2>
+
+            <div class="form-group">
+                <label for="pesquisa-medicamento">Pesquisar Medicamento:</label>
+                <input type="text" id="pesquisa-medicamento" placeholder="Digite o nome comercial para filtrar...">
+            </div>
+            
             <table id="tabela-medicamentos">
                 <thead>
                 <tr>
@@ -76,7 +85,9 @@
             </table>
         </div>
     </div>
+
     <div id="clientes" class="tab-content">
+        
         <div class="container">
             <h2>Cadastrar Novo Cliente</h2>
             <form id="form-cliente">
@@ -84,12 +95,18 @@
                 <div class="form-group"><label for="cli-cpf">CPF:</label><input type="text" id="cli-cpf" required></div>
                 <div class="form-group"><label for="cli-idade">Idade:</label><input type="number" id="cli-idade" min="0"></div>
                 <div class="form-group"><label for="cli-endereco">Endereço:</label><input type="text" id="cli-endereco"></div>
-
                 <button type="submit" class="btn">Salvar Cliente</button>
             </form>
         </div>
+
         <div class="container">
             <h2>Lista de Clientes</h2>
+
+            <div class="form-group">
+                <label for="pesquisa-cliente">Pesquisar Cliente:</label>
+                <input type="text" id="pesquisa-cliente" placeholder="Digite o nome ou CPF para filtrar...">
+            </div>
+
             <table id="tabela-clientes">
                 <thead>
                 <tr>
@@ -106,6 +123,7 @@
     </div>
 
     <div id="vendas" class="tab-content">
+        
         <div class="container">
             <h2>Registrar Nova Venda</h2>
             <form id="form-venda">
@@ -128,6 +146,7 @@
                 <button type="submit" class="btn">Salvar Venda</button>
             </form>
         </div>
+
         <div class="container">
             <h2>Histórico de Vendas</h2>
             <table id="tabela-vendas">
