@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Medicamentos</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="cabecalho">
+    <div class="logo-container">
+        <img src="../imagem/logo.png" alt="Logo da Farmácia" class="logo">
+    </div>
+    <h1 class="titulo">Sistema de Gerenciamento da Farmácia</h1>
+</header>
+
+<nav class="menu-principal">
+    <nav class="menu-principal">
+    <a href="../medicamentos/medicamento.html" class="active">Medicamentos</a>
+    <a href="../clientes/cliente.html">Clientes</a>
+    <a href="../vendas/venda.html">Registrar Venda</a>
+    <a href="../login/login.html" class="logout">Sair</a>
+</nav>
+</nav>
+
+<main>
+    <div class="container">
+        <h2>Cadastrar Novo Medicamento</h2>
+        <form id="form-medicamento">
+            <div class="form-group">
+                <label for="med-nome-comercial">Nome Comercial:</label>
+                <input type="text" id="med-nome-comercial" required>
+            </div>
+            <div class="form-group">
+                <label for="med-fabricante">Fabricante:</label>
+                <input type="text" id="med-fabricante" required>
+            </div>
+            <div class="form-group">
+                <label for="med-preco">Preço (R$):</label>
+                <input type="number" id="med-preco" step="0.01" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="med-lote">Lote:</label>
+                <input type="number" id="med-lote" min="0" required>
+            </div>
+            <div class="form-group">
+                <label for="med-data">Data de Validade:</label>
+                <input type="date" id="med-data" required>
+            </div>
+            <div class="form-group">
+                <label for="med-classificacao">Classificação:</label>
+                <select id="med-classificacao" required>
+                    <option value="" disabled selected>Selecione uma opção</option>
+                    <option value="CONTROLADO">Controlado</option>
+                    <option value="VENDA_LIVRE">Venda Livre</option>
+                </select>
+            </div>
+            <button type="submit" class="btn">Salvar Medicamento</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Lista de Medicamentos</h2>
+        <div class="form-group">
+            <label for="pesquisa-medicamento">Pesquisar Medicamento:</label>
+            <input type="text" id="pesquisa-medicamento" placeholder="Digite o nome comercial para filtrar...">
+        </div>
+        
+        <table id="tabela-medicamentos">
+            <thead>
+            <tr>
+                <th>Nome Comercial</th>
+                <th>Fabricante</th>
+                <th>Preço</th>
+                <th>Lote</th>
+                <th>Data de Validade</th>
+                <th>Classificação</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer><p>&copy; 2024 Projeto Farmácia</p></footer>
+
+<script src="../auth.js"></script> 
+<script src="medicamentos.js"></script>
+
+</body>
+</html>
