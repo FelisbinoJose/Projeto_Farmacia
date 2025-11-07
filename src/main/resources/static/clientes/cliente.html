@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Clientes</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="cabecalho">
+    <div class="logo-container">
+        <img src="../imagem/logo.png" alt="Logo da Farmácia" class="logo">
+    </div>
+    <h1 class="titulo">Sistema de Gerenciamento da Farmácia</h1>
+</header>
+
+<nav class="menu-principal">
+    <a href="../medicamentos/medicamento.html">Medicamentos</a>
+    <a href="cliente.html" class="active">Clientes</a>
+    <a href="../vendas/venda.html">Registrar Venda</a>
+    <a href="../login/login.html" class="logout">Sair</a>
+</nav>
+
+<main>
+    <div class="container">
+        <h2>Cadastrar Novo Cliente</h2>
+        <form id="form-cliente">
+            <div class="form-group"><label for="cli-nome">Nome:</label><input type="text" id="cli-nome" required></div>
+            <div class="form-group"><label for="cli-cpf">CPF:</label><input type="text" id="cli-cpf" required></div>
+            <div class="form-group"><label for="cli-idade">Idade:</label><input type="number" id="cli-idade" min="0"></div>
+            <div class="form-group"><label for="cli-endereco">Endereço:</label><input type="text" id="cli-endereco"></div>
+            <button type="submit" class="btn">Salvar Cliente</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Lista de Clientes</h2>
+
+        <div class="form-group">
+            <label for="pesquisa-cliente">Pesquisar Cliente:</label>
+            <input type="text" id="pesquisa-cliente" placeholder="Digite o nome ou CPF para filtrar...">
+        </div>
+
+        <table id="tabela-clientes">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Idade</th>
+                <th>Endereço</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</main>
+
+<footer><p>&copy; 2024 Projeto Farmácia</p></footer>
+
+<script src="cliente.js"></script>
+<script src="../auth.js"></script>
+
+</body>
+</html>
