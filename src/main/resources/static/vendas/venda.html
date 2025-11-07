@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Vendas</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="cabecalho">
+    <div class="logo-container">
+        <img src="../imagem/logo.png" alt="Logo da Farmácia" class="logo">
+    </div>
+    <h1 class="titulo">Sistema de Gerenciamento da Farmácia</h1>
+</header>
+
+<nav class="menu-principal">
+    <a href="../medicamentos/medicamento.html">Medicamentos</a>
+    <a href="../clientes/cliente.html">Clientes</a>
+    <a href="venda.html" class="active">Registrar Venda</a>
+    <a href="../login/login.html" class="logout">Sair</a>
+</nav>
+
+<main>
+    <div class="container">
+        <h2>Registrar Nova Venda</h2>
+        <form id="form-venda">
+            <div class="form-group">
+                <label for="venda-cliente">Cliente:</label>
+                <select id="venda-cliente" required>
+                    <option value="" disabled selected>Carregando clientes...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="venda-medicamento">Medicamento:</label>
+                <select id="venda-medicamento" required>
+                    <option value="" disabled selected>Carregando medicamentos...</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="venda-quantidade">Quantidade:</label>
+                <input type="number" id="venda-quantidade" min="1" required>
+            </div>
+            <button type="submit" class="btn">Salvar Venda</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h2>Histórico de Vendas</h2>
+        <table id="tabela-vendas">
+            <thead>
+            <tr>
+                <th>Cliente</th>
+                <th>Medicamento</th>
+                <th>Quantidade</th>
+                <th>Data da Venda</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<footer><p>&copy; 2024 Projeto Farmácia</p></footer>
+<script src="../auth.js"></script>
+<script src="venda.js"></script>
+
+</body>
+</html>
