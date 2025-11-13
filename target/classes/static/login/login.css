@@ -1,0 +1,124 @@
+/* src/main/resources/static/login.css */
+:root {
+    --primary-green: #2ECC71;
+    --dark-green: #27AE60;
+    --background-color: #F8F9FA;
+    --card-background: #FFFFFF;
+    --text-color: #34495E;
+    --border-color: #EAECEE;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.login-container {
+    max-width: 450px;
+    width: 100%;
+    padding: 40px;
+    background: var(--card-background);
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.logo-login {
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.login-container h1 {
+    color: var(--primary-green);
+    margin-bottom: 10px;
+}
+
+.login-container p {
+    margin-bottom: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box; /* Garante que o padding não afete a largura */
+}
+
+.btn-login {
+    display: inline-block;
+    width: 100%;
+    background: var(--primary-green);
+    color: #fff;
+    padding: 12px 25px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.btn-login:hover {
+    background: var(--dark-green);
+}
+
+.btn-sobre {
+    display: inline-block;
+    width: 100%;
+    background: #f0f0f0;
+    color: var(--text-color);
+    padding: 10px 25px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    margin-top: 15px;
+    box-sizing: border-box;
+}
+
+.btn-sobre:hover {
+    background: #e9e9e9;
+}
+
+/* Estilos para a página Sobre */
+.sobre-container ul {
+    text-align: left;
+    list-style-position: inside;
+    margin: 20px 0;
+    padding: 0 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    width: 100%;
+    margin-top: auto; /* Empurra o footer para baixo */
+}
