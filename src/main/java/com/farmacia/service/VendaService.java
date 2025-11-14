@@ -38,4 +38,7 @@ public class VendaService {
 
         return vendaRepository.save(venda);
     }
+    public java.util.List<Venda> listarVendas() {
+        return vendaRepository.findAll();
+    }
 }
