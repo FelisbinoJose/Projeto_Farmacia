@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão da Farmácia</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <h1>Sistema de Gerenciamento da Farmácia</h1>
+    </header>
+
+    <nav class="tab-nav">
+        <button class="tab-button active" onclick="openTab(event, 'medicamentos')">Medicamentos</button>
+        <button class="tab-button" onclick="openTab(event, 'clientes')">Clientes</button>
+        <button class="tab-button" onclick="openTab(event, 'vendas')">Registrar Venda</button>
+    </nav>
+
+    <main>
+        <div id="medicamentos" class="tab-content active">
+            <div class="container">
+                <h2>Cadastrar Novo Medicamento</h2>
+                <form id="form-medicamento">
+                    <div class="form-group"><label for="nome">Nome:</label><input type="text" id="med-nome" required></div>
+                    <div class="form-group"><label for="anvisa">Registro ANVISA:</label><input type="text" id="med-anvisa" required></div>
+                    <div class="form-group"><label for="descricao">Descrição:</label><textarea id="med-descricao" rows="3"></textarea></div>
+                    <div class="form-group"><label for="preco">Preço (R$):</label><input type="number" id="med-preco" step="0.01" min="0" required></div>
+                    <div class="form-group"><label for="estoque">Estoque:</label><input type="number" id="med-estoque" min="0" required></div>
+                    <button type="submit" class="btn">Salvar Medicamento</button>
+                </form>
+            </div>
+            <div class="container">
+                <h2>Lista de Medicamentos</h2>
+                <table id="tabela-medicamentos">
+                    <thead><tr><th>Nome</th><th>ANVISA</th><th>Preço</th><th>Estoque</th><th>Ações</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="clientes" class="tab-content">
+            <div class="container">
+                <h2>Cadastrar Novo Cliente</h2>
+                <form id="form-cliente">
+                    <div class="form-group"><label for="nome">Nome:</label><input type="text" id="cli-nome" required></div>
+                    <div class="form-group"><label for="cpf">CPF:</label><input type="text" id="cli-cpf" required></div>
+                    <div class="form-group"><label for="telefone">Telefone:</label><input type="text" id="cli-telefone"></div>
+                    <div class="form-group"><label for="email">Email:</label><input type="email" id="cli-email"></div>
+                    <button type="submit" class="btn">Salvar Cliente</button>
+                </form>
+            </div>
+            <div class="container">
+                <h2>Lista de Clientes</h2>
+                <table id="tabela-clientes">
+                    <thead><tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>Ações</th></tr></thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="vendas" class="tab-content">
+            <div class="container">
+                <h2>Registrar Nova Venda</h2>
+                <p>Funcionalidade de vendas em desenvolvimento.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer><p>&copy; 2024 Projeto Farmácia</p></footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
