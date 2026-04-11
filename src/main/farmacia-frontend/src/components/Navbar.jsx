@@ -1,20 +1,33 @@
-import { Link } from 'react-router-dom';
-
-const Navbar = () => {
+const Navbar = ({ perfil, setPerfil }) => {
   return (
-    <nav style={{ 
-      padding: '1rem', 
-      backgroundColor: '#2c3e50', 
-      color: 'white',
-      display: 'flex',
-      gap: '20px' 
-    }}>
-      <Link to="/" style={{ color: 'white', textDecoration: 'none', fontWeight: 'bold' }}>Home</Link>
-      <Link to="/medicamentos" style={{ color: 'white', textDecoration: 'none' }}>Medicamentos</Link>
-      <Link to="/clientes" style={{ color: 'white', textDecoration: 'none' }}>Clientes</Link>
-      <Link to="/vendas" style={{ color: 'white', textDecoration: 'none' }}>Nova Venda</Link>
+    <nav style={navStyle}>
+      <div className="logo">💊 Farmácia Unibave</div>
+      
+      <div className="links">
+        <Link to="/">Home</Link>
+
+        {perfil === 'funcionario' && (
+          <>
+            <Link to="/estoque">Gerir Estoque</Link>
+            <Link to="/clientes">Clientes</Link>
+            <Link to="/pedidos-recebidos">Pedidos</Link>
+          </>
+        )}
+
+        {perfil === 'cliente' && (
+          <Link to="/meus-pedidos">Fazer Pedido</Link>
+        )}
+
+        {/* BOTÕES DE LOGIN (Simulados para teste) */}
+        {perfil === 'publico' ? (
+          <div>
+            <button onClick={() => setPerfil('funcionario')}>Login Funcional</button>
+            <button onClick={() => setPerfil('cliente')}>Login Cliente</button>
+          </div>
+        ) : (
+          <button onClick={() => setPerfil('publico')}>Sair (Logout)</button>
+        )}
+      </div>
     </nav>
   );
 };
-
-export default Navbar;
