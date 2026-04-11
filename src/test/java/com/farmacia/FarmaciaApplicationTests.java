@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
+
 class FarmaciaApplicationTests {
 
 	@Test
@@ -91,6 +91,8 @@ class FarmaciaApplicationTests {
 		assertEquals("Medicamento Não pode ser null.", ex.getMessage());
 	}
 
+	// 👇 AQUI ESTAVA FALTANDO A ANOTAÇÃO @Test
+	@Test
 	void vendaClienteNUllTest() {
 		Venda venda = new Venda();
 		IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () -> venda.setCliente(null));
