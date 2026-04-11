@@ -24,6 +24,7 @@ public class VendaController {
     }
 
     @PostMapping
+
     public ResponseEntity<Venda> realizarVenda(
             @RequestParam Long idCliente,
             @RequestParam Long idMedicamento,
