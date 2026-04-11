@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/vendas")
+@CrossOrigin(origins = "http://localhost:5173")
 public class VendaController {
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(VendaController.class);
 
