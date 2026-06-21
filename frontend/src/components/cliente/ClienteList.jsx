@@ -1,61 +1,64 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import { getClientes, deleteCliente } from '../../hooks/useApi';
+import { useApp } from '../../context/AppContext';
 
-const ClienteList = () => {
-    const [clientes, setClientes] = useState([]);
+export default function ClienteList({ atualizar }) {
+  const { toast } = useApp();
+  const [clientes, setClientes] = useState([]);
 
-    const carregarClientes = () => {
-       
-        axios.get('http://localhost:8080/api/clientes')
-            .then(response => {
-                setClientes(response.data);
-            })
-            .catch(error => {
-                console.error("Erro ao procurar clientes:", error);
-            });
-    };
+  const carregar = () => getClientes().then(setClientes).catch(() => setClientes([]));
 
-    useEffect(() => {
-        carregarClientes();
-    }, []);
+  useEffect(() => { carregar(); }, [atualizar]);
 
-    return (
-        <div style={{ marginTop: '20px' }}>
-            <h3>Lista de Clientes Registados</h3>
-            <table border="1" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                <thead>
-                    <tr style={{ backgroundColor: '#ecf0f1' }}>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Idade</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {clientes.length > 0 ? (
-                        clientes.map((cli) => (
-                            <tr key={cli.id}>
-                                <td style={{ padding: '8px' }}>{cli.nome}</td>
-                                <td style={{ padding: '8px' }}>{cli.cpf}</td>
-                                <td style={{ padding: '8px' }}>{cli.idade}</td>
-                            </tr>
-                        ))
-                    ) : (
-                        <tr>
-                            <td colSpan="3" style={{ padding: '10px', textAlign: 'center' }}>
-                                Nenhum cliente encontrado.
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
-            <button 
-                onClick={carregarClientes} 
-                style={{ marginTop: '10px', padding: '5px 10px', cursor: 'pointer' }}
-            >
-                Atualizar Lista
-            </button>
-        </div>
-    );
-};
+  const handleDeletar = async (id, nome) => {
+    if (!confirm(`Remover cliente "${nome}"?`)) return;
+    try {
+      await deleteCliente(id);
+      toast('✅ Cliente removido.');
+      carregar();
+    } catch {
+      toast('❌ Erro ao remover cliente.', 'erro');
+    }
+  };
 
-export default ClienteList;
+  return (
+    <div className="dash-secao">
+      <h3>📋 Lista de Clientes</h3>
+      <div className="tabela-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>CPF</th>
+              <th>Idade</th>
+              <th>Endereço</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            {clientes.length === 0 ? (
+              <tr><td colSpan={5} style={{ textAlign: 'center', color: 'var(--texto-suave)', padding: '2rem' }}>Nenhum cliente cadastrado.</td></tr>
+            ) : (
+              clientes.map(c => (
+                <tr key={c.id}>
+                  <td>{c.nome}</td>
+                  <td>{c.cpf}</td>
+                  <td>{c.idade}</td>
+                  <td>{c.endereco || '—'}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDeletar(c.id, c.nome)}
+                      style={{ background: 'var(--vermelho)', color: '#fff', border: 'none', padding: '0.4rem 0.8rem', borderRadius: '8px', cursor: 'pointer', fontSize: '0.8rem' }}
+                    >
+                      🗑️ Remover
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}

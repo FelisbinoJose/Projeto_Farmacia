@@ -1,33 +1,37 @@
-const Navbar = ({ perfil, setPerfil }) => {
-  return (
-    <nav style={navStyle}>
-      <div className="logo">💊 Farmácia Unibave</div>
-      
-      <div className="links">
-        <Link to="/">Home</Link>
+import { useApp } from '../context/AppContext';
 
-        {perfil === 'funcionario' && (
-          <>
-            <Link to="/estoque">Gerir Estoque</Link>
-            <Link to="/clientes">Clientes</Link>
-            <Link to="/pedidos-recebidos">Pedidos</Link>
-          </>
-        )}
+export default function Navbar({ onAbrirLogin, onAbrirCarrinho }) {
+  const { perfil, sair, totalCarrinho } = useApp();
 
-        {perfil === 'cliente' && (
-          <Link to="/meus-pedidos">Fazer Pedido</Link>
-        )}
+  if (!perfil) return (
+    <nav className="navbar">
+      <div className="navbar-logo">💊 FarmaVida</div>
+      <div className="navbar-links">
+        <a href="#vitrine">Medicamentos</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
+      </div>
+      <button className="btn-entrar" onClick={onAbrirLogin}>🔐 Entrar</button>
+    </nav>
+  );
 
-        {/* BOTÕES DE LOGIN (Simulados para teste) */}
-        {perfil === 'publico' ? (
-          <div>
-            <button onClick={() => setPerfil('funcionario')}>Login Funcional</button>
-            <button onClick={() => setPerfil('cliente')}>Login Cliente</button>
-          </div>
-        ) : (
-          <button onClick={() => setPerfil('publico')}>Sair (Logout)</button>
-        )}
+  if (perfil === 'cliente') return (
+    <nav className="navbar">
+      <div className="navbar-logo">💊 FarmaVida</div>
+      <div style={{ display: 'flex', gap: '0.7rem' }}>
+        <button className="btn-nav" onClick={onAbrirCarrinho} style={{ position: 'relative' }}>
+          🛒 Meu Pedido
+          {totalCarrinho > 0 && <span className="badge-carrinho">{totalCarrinho}</span>}
+        </button>
+        <button className="btn-nav" onClick={sair}>↩ Sair</button>
       </div>
     </nav>
   );
-};
+
+  return (
+    <nav className="navbar navbar-dash">
+      <div className="navbar-logo">⚕️ Painel Farmacêutico</div>
+      <button className="btn-nav" onClick={sair}>↩ Sair</button>
+    </nav>
+  );
+}

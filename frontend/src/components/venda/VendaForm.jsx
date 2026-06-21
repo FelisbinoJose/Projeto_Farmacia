@@ -1,81 +1,59 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useEffect, useState } from 'react';
+import { getMedicamentos, getClientes, postVenda } from '../../hooks/useApi';
+import { useApp } from '../../context/AppContext';
 
-const VendaForm = () => {
-    const [clientes, setClientes] = useState([]);
-    const [medicamentos, setMedicamentos] = useState([]);
-    const [venda, setVenda] = useState({
-        clienteId: "",
-        medicamentoId: "",
-        quantidade: 1
-    });
+export default function VendaForm({ onSalvo }) {
+  const { toast } = useApp();
+  const [clientes, setClientes]         = useState([]);
+  const [medicamentos, setMedicamentos] = useState([]);
+  const [form, setForm]                 = useState({ idCliente: '', idMedicamento: '', quantidade: 1 });
 
-    // Carregar dados iniciais para popular os selects
-    useEffect(() => {
-        axios.get('http://localhost:8080/api/clientes').then(res => setClientes(res.data));
-        axios.get('http://localhost:8080/api/medicamentos').then(res => setMedicamentos(res.data));
-    }, []);
+  useEffect(() => {
+    getClientes().then(setClientes).catch(() => {});
+    getMedicamentos().then(setMedicamentos).catch(() => {});
+  }, []);
 
-    const handleSubmit = (e) => {
+  const set = (campo, valor) => setForm(f => ({ ...f, [campo]: valor }));
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
-   
-    axios.post('http://localhost:8080/api/vendas', null, {
-        params: {
-            idCliente: venda.clienteId,
-            idMedicamento: venda.medicamentoId,
-            quantidade: venda.quantidade
-        }
-    })
-    .then(() => {
-        alert("Venda realizada com sucesso!");
-        setVenda({ clienteId: "", medicamentoId: "", quantidade: 1 });
-    })
-    .catch(err => {
-        console.error("Erro na venda:", err);
-        alert("Erro ao realizar venda. Verifique se o cliente e o remédio existem.");
-    });
-};
+    if (!form.idCliente || !form.idMedicamento) { toast('Selecione cliente e medicamento.', 'erro'); return; }
+    try {
+      await postVenda(form.idCliente, form.idMedicamento, form.quantidade);
+      toast('✅ Venda registrada!');
+      setForm({ idCliente: '', idMedicamento: '', quantidade: 1 });
+      onSalvo?.();
+    } catch {
+      toast('❌ Erro ao registrar venda.', 'erro');
+    }
+  };
 
-    return (
-        <div style={{ maxWidth: '500px', padding: '20px', border: '1px solid #ddd' }}>
-            <h3>Nova Venda</h3>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-                
-                <label>Selecionar Cliente:</label>
-                <select 
-                    value={venda.clienteId} 
-                    onChange={(e) => setVenda({...venda, clienteId: e.target.value})}
-                    required
-                >
-                    <option value="">Selecione...</option>
-                    {clientes.map(c => <option key={c.id} value={c.id}>{c.nome}</option>)}
-                </select>
-
-                <label>Selecionar Medicamento:</label>
-                <select 
-                    value={venda.medicamentoId} 
-                    onChange={(e) => setVenda({...venda, medicamentoId: e.target.value})}
-                    required
-                >
-                    <option value="">Selecione...</option>
-                    {medicamentos.map(m => <option key={m.id} value={m.id}>{m.nomeComercial} - R$ {m.precoVenda}</option>)}
-                </select>
-
-                <label>Quantidade:</label>
-                <input 
-                    type="number" 
-                    min="1" 
-                    value={venda.quantidade} 
-                    onChange={(e) => setVenda({...venda, quantidade: e.target.value})}
-                />
-
-                <button type="submit" style={{ backgroundColor: '#e67e22', color: 'white', padding: '10px' }}>
-                    Finalizar Venda
-                </button>
-            </form>
+  return (
+    <div className="dash-secao">
+      <h3>🛒 Registrar Venda</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="form-row">
+          <div className="form-grupo">
+            <label>Cliente</label>
+            <select value={form.idCliente} onChange={e => set('idCliente', e.target.value)} required>
+              <option value="">Selecione...</option>
+              {clientes.map(c => <option key={c.id} value={c.id}>{c.nome}</option>)}
+            </select>
+          </div>
+          <div className="form-grupo">
+            <label>Medicamento</label>
+            <select value={form.idMedicamento} onChange={e => set('idMedicamento', e.target.value)} required>
+              <option value="">Selecione...</option>
+              {medicamentos.map(m => <option key={m.id} value={m.id}>{m.nomeComercial}</option>)}
+            </select>
+          </div>
         </div>
-    );
-};
-
-export default VendaForm;
+        <div className="form-grupo" style={{ marginTop: '1rem' }}>
+          <label>Quantidade</label>
+          <input type="number" min="1" value={form.quantidade} onChange={e => set('quantidade', e.target.value)} required />
+        </div>
+        <button type="submit" className="btn-dash farma">✅ Registrar Venda</button>
+      </form>
+    </div>
+  );
+}

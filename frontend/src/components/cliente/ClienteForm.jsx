@@ -1,59 +1,53 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import { postCliente } from '../../hooks/useApi';
+import { useApp } from '../../context/AppContext';
 
-const ClienteForm = () => {
-    const [formData, setFormData] = useState({
-        nome: '',
-        cpf: '',
-        email: ''
-    });
+export default function ClienteForm({ onSalvo }) {
+  const { toast } = useApp();
+  const [form, setForm] = useState({ nome: '', cpf: '', idade: '', endereco: '' });
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        
-        // Lembra-te de adicionar o /api se configuraste assim no Java
-        axios.post('http://localhost:8080/api/clientes', formData)
-            .then(() => {
-                alert('Cliente cadastrado com sucesso!');
-                setFormData({ nome: '', cpf: '', email: '' }); // Limpa o formulário
-            })
-            .catch(error => {
-                console.error('Erro ao cadastrar cliente:', error);
-                alert('Erro ao cadastrar. Verifica o terminal do Java.');
-            });
-    };
+  const set = (campo, valor) => setForm(f => ({ ...f, [campo]: valor }));
 
-    return (
-        <div style={{ maxWidth: '400px', marginBottom: '20px' }}>
-            <h3>Registar Novo Cliente</h3>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                <input 
-                    type="text" 
-                    placeholder="Nome Completo" 
-                    value={formData.nome}
-                    onChange={(e) => setFormData({...formData, nome: e.target.value})}
-                    required
-                />
-                <input 
-                    type="text" 
-                    placeholder="CPF (apenas números)" 
-                    value={formData.cpf}
-                    onChange={(e) => setFormData({...formData, cpf: e.target.value})}
-                    required
-                />
-                <input 
-                    type="number" 
-                    placeholder="Idade" 
-                    value={formData.idade}
-                    onChange={(e) => setFormData({...formData, idade: e.target.value})}
-                    required
-                />
-                <button type="submit" style={{ backgroundColor: '#27ae60', color: 'white', border: 'none', padding: '10px', cursor: 'pointer' }}>
-                    Guardar Cliente
-                </button>
-            </form>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const cpf = form.cpf.replace(/\D/g, '');
+    if (cpf.length !== 11) { toast('CPF deve ter 11 dígitos.', 'erro'); return; }
+    try {
+      await postCliente({ ...form, cpf, idade: parseInt(form.idade) || 0 });
+      toast('✅ Cliente cadastrado!');
+      setForm({ nome: '', cpf: '', idade: '', endereco: '' });
+      onSalvo?.();
+    } catch {
+      toast('❌ Erro ao cadastrar cliente.', 'erro');
+    }
+  };
+
+  return (
+    <div className="dash-secao">
+      <h3>👤 Cadastrar Cliente</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="form-row">
+          <div className="form-grupo">
+            <label>Nome</label>
+            <input value={form.nome} onChange={e => set('nome', e.target.value)} required />
+          </div>
+          <div className="form-grupo">
+            <label>CPF (só números)</label>
+            <input value={form.cpf} maxLength={14} onChange={e => set('cpf', e.target.value)} required />
+          </div>
         </div>
-    );
-};
-
-export default ClienteForm;
+        <div className="form-row">
+          <div className="form-grupo">
+            <label>Idade</label>
+            <input type="number" min="0" value={form.idade} onChange={e => set('idade', e.target.value)} />
+          </div>
+          <div className="form-grupo">
+            <label>Endereço</label>
+            <input value={form.endereco} onChange={e => set('endereco', e.target.value)} />
+          </div>
+        </div>
+        <button type="submit" className="btn-dash">+ Cadastrar</button>
+      </form>
+    </div>
+  );
+}

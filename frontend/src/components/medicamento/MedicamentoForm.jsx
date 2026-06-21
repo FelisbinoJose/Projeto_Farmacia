@@ -1,47 +1,71 @@
-import { useState } from "react";
-import axios from "axios";
+import { useState } from 'react';
+import { postMedicamento } from '../../hooks/useApi';
+import { useApp } from '../../context/AppContext';
 
+export default function MedicamentoForm({ onSalvo }) {
+  const { toast } = useApp();
+  const [form, setForm] = useState({
+    nomeComercial: '', fabricante: '', preco: '',
+    lote: '', date: '', classificacao: 'VENDA_LIVRE', utilidade: '',
+  });
 
-const MedicamentoForm = () => {
-    const [formData, setFormData] = useState({
-        nomeComercial: '',
-        fabricante: '',
-        precoVenda: '',
-    });
+  const set = (campo, valor) => setForm(f => ({ ...f, [campo]: valor }));
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await postMedicamento({ ...form, preco: parseFloat(form.preco), lote: parseInt(form.lote) });
+      toast('✅ Medicamento cadastrado!');
+      setForm({ nomeComercial: '', fabricante: '', preco: '', lote: '', date: '', classificacao: 'VENDA_LIVRE', utilidade: '' });
+      onSalvo?.();
+    } catch {
+      toast('❌ Erro ao cadastrar medicamento.', 'erro');
+    }
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:8080/api/medicamentos', formData)
-        .then(() => alert('Medicamento cadastrado com sucesso!'))
-        .catch(error => console.error('Erro ao cadastrar medicamento:', error));
-    };
-
-    return (
-        <form onSubmit={handleSubmit}>
-            <input 
-                type="text" 
-                placeholder="Nome do Remédio" 
-                onChange={(e) => setFormData({...formData, nomeComercial: e.target.value})} 
-            />
-            <input 
-            type="text" 
-            placeholder="Fabricante" 
-            value={formData.fabricante}
-            onChange={(e) => setFormData({...formData, fabricante: e.target.value})} // 👈 Verifique se essa linha existe
-            />
-            <input 
-            type="text" 
-            placeholder="Preço de Venda" 
-            value={formData.precoVenda}
-            onChange={(e) => setFormData({...formData, precoVenda: e.target.value})} // 👈 Verifique se essa linha existe
-            />
-            <button type="submit">Cadastrar</button>
-        </form>
-    );
-};
-export default MedicamentoForm;
-            
-
-
-    
+  return (
+    <div className="dash-secao">
+      <h3>💊 Cadastrar Medicamento</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="form-row">
+          <div className="form-grupo">
+            <label>Nome Comercial</label>
+            <input value={form.nomeComercial} onChange={e => set('nomeComercial', e.target.value)} required />
+          </div>
+          <div className="form-grupo">
+            <label>Fabricante</label>
+            <input value={form.fabricante} onChange={e => set('fabricante', e.target.value)} required />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-grupo">
+            <label>Preço (R$)</label>
+            <input type="number" step="0.01" min="0.01" value={form.preco} onChange={e => set('preco', e.target.value)} required />
+          </div>
+          <div className="form-grupo">
+            <label>Lote</label>
+            <input type="number" min="1" value={form.lote} onChange={e => set('lote', e.target.value)} required />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-grupo">
+            <label>Data de Validade</label>
+            <input type="date" value={form.date} onChange={e => set('date', e.target.value)} required />
+          </div>
+          <div className="form-grupo">
+            <label>Classificação</label>
+            <select value={form.classificacao} onChange={e => set('classificacao', e.target.value)}>
+              <option value="VENDA_LIVRE">Venda Livre</option>
+              <option value="CONTROLADO">Controlado</option>
+            </select>
+          </div>
+        </div>
+        <div className="form-grupo" style={{ marginTop: '1rem' }}>
+          <label>Para que serve</label>
+          <input placeholder="Ex: Analgésico e antitérmico..." value={form.utilidade} onChange={e => set('utilidade', e.target.value)} required />
+        </div>
+        <button type="submit" className="btn-dash">+ Cadastrar</button>
+      </form>
+    </div>
+  );
+}
