@@ -226,3 +226,55 @@ body::before {
     opacity: 0.05; /* Deixa a imagem bem sutil */
     z-index: -1; /* Coloca a imagem atrás de todo o conteúdo */
 }
+/* ======== TELA DE LOGIN ======== */
+
+.login-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.login-overlay.hidden {
+    display: none;
+}
+
+.login-box {
+    background: #fff;
+    padding: 32px;
+    border-radius: 8px;
+    width: 320px;
+    max-width: 90vw;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.logo-login {
+    width: 64px;
+    margin-bottom: 12px;
+}
+
+.login-erro {
+    color: #c0392b;
+    font-size: 0.9em;
+    margin-top: 8px;
+    min-height: 1.2em;
+}
+
+.login-box details {
+    margin-top: 16px;
+    text-align: left;
+}
+
+#btn-logout {
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+}

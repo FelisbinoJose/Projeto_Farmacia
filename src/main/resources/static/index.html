@@ -8,12 +8,51 @@
 </head>
 <body>
 
+<div id="login-overlay" class="login-overlay">
+    <div class="login-box">
+        <img src="logo.png" alt="Logo da Farmácia" class="logo-login">
+        <h2>Entrar no sistema</h2>
+        <form id="form-login">
+            <div class="form-group">
+                <label for="login-username">Usuário:</label>
+                <input type="text" id="login-username" required>
+            </div>
+            <div class="form-group">
+                <label for="login-senha">Senha:</label>
+                <input type="password" id="login-senha" required>
+            </div>
+            <button type="submit" class="btn">Entrar</button>
+            <p id="login-erro" class="login-erro"></p>
+        </form>
+
+        <hr>
+
+        <details>
+            <summary>Criar novo usuário</summary>
+            <form id="form-registro">
+                <div class="form-group">
+                    <label for="registro-username">Usuário:</label>
+                    <input type="text" id="registro-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="registro-senha">Senha (mín. 6 caracteres):</label>
+                    <input type="password" id="registro-senha" minlength="6" required>
+                </div>
+                <button type="submit" class="btn">Cadastrar</button>
+                <p id="registro-mensagem" class="login-erro"></p>
+            </form>
+        </details>
+    </div>
+</div>
+
 <header class="cabecalho">
     <div class="logo-container">
         <img src="logo.png" alt="Logo da Farmácia" class="logo">
     </div>
     <h1 class="titulo">Sistema de Gerenciamento da Farmácia</h1>
+    <button id="btn-logout" class="btn" style="display:none;">Sair</button>
 </header>
+
 
 <nav class="tab-nav">
     <button class="tab-button active" onclick="openTab(event, 'medicamentos')">Medicamentos</button>

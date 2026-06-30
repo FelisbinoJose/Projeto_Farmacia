@@ -1,9 +1,119 @@
+// ======== AUTENTICAÇÃO (JWT) ========
+const TOKEN_KEY = 'farmacia_token';
+
+function getToken() {
+    return localStorage.getItem(TOKEN_KEY);
+}
+
+function setToken(token) {
+    localStorage.setItem(TOKEN_KEY, token);
+}
+
+function clearToken() {
+    localStorage.removeItem(TOKEN_KEY);
+}
+
+// Wrapper de fetch que injeta automaticamente o header Authorization
+// e trata respostas 401 (token ausente/expirado) redirecionando para o login.
+async function apiFetch(url, options = {}) {
+    const token = getToken();
+    const headers = { ...(options.headers || {}) };
+    if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    const response = await fetch(url, { ...options, headers });
+
+    if (response.status === 401) {
+        clearToken();
+        mostrarTelaLogin('Sessão expirada. Faça login novamente.');
+    }
+
+    return response;
+}
+
+function mostrarTelaLogin(mensagemErro) {
+    document.getElementById('login-overlay').classList.remove('hidden');
+    document.getElementById('btn-logout').style.display = 'none';
+    document.getElementById('login-erro').textContent = mensagemErro || '';
+}
+
+function esconderTelaLogin() {
+    document.getElementById('login-overlay').classList.add('hidden');
+    document.getElementById('btn-logout').style.display = 'inline-block';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
     // APIs - caminhos base dos controllers do backend
     const apiUrlMedicamentos = '/api/medicamentos';
     const apiUrlClientes = '/api/clientes';
     const apiUrlVendas = '/api/vendas';
+    const apiUrlAuth = '/api/auth';
+
+    // --- Formulário de login ---
+    document.getElementById('form-login').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const username = document.getElementById('login-username').value;
+        const senha = document.getElementById('login-senha').value;
+        const erroEl = document.getElementById('login-erro');
+        erroEl.textContent = '';
+
+        try {
+            const resp = await fetch(`${apiUrlAuth}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, senha })
+            });
+
+            if (!resp.ok) {
+                erroEl.textContent = 'Usuário ou senha inválidos.';
+                return;
+            }
+
+            const dados = await resp.json();
+            setToken(dados.token);
+            esconderTelaLogin();
+            carregarPagina();
+        } catch (error) {
+            console.error(error);
+            erroEl.textContent = 'Erro ao conectar com o servidor.';
+        }
+    });
+
+    // --- Formulário de registro de novo usuário ---
+    document.getElementById('form-registro').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const username = document.getElementById('registro-username').value;
+        const senha = document.getElementById('registro-senha').value;
+        const msgEl = document.getElementById('registro-mensagem');
+
+        try {
+            const resp = await fetch(`${apiUrlAuth}/registrar`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, senha })
+            });
+
+            const texto = await resp.text();
+            msgEl.style.color = resp.ok ? '#27ae60' : '#c0392b';
+            msgEl.textContent = texto;
+
+            if (resp.ok) {
+                event.target.reset();
+            }
+        } catch (error) {
+            console.error(error);
+            msgEl.style.color = '#c0392b';
+            msgEl.textContent = 'Erro ao conectar com o servidor.';
+        }
+    });
+
+    // --- Logout ---
+    document.getElementById('btn-logout').addEventListener('click', () => {
+        clearToken();
+        mostrarTelaLogin();
+    });
 
     // Formulários
     const formMedicamento = document.getElementById('form-medicamento');
@@ -22,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função genérica para carregar dados. Agora ela SEMPRE retorna os dados.
     async function carregarDados(apiUrl, tabela, preencherTabelaFn) {
         try {
-            const response = await fetch(apiUrl);
+            const response = await apiFetch(apiUrl);
             if (!response.ok) throw new Error(`Erro na API: ${response.status}`);
             const dados = await response.json();
             tabela.innerHTML = '';
@@ -37,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função genérica para deletar
     async function deletarItem(apiUrl, id, callback) {
         try {
-            const response = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+            const response = await apiFetch(`${apiUrl}/${id}`, { method: 'DELETE' });
             if (!response.ok) throw new Error('Erro ao deletar o item.');
             callback();
         } catch (error) {
@@ -87,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
             classificacao: document.getElementById('med-classificacao').value
         };
         try {
-            const resp = await fetch(apiUrlMedicamentos, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(novoMedicamento) });
+            const resp = await apiFetch(apiUrlMedicamentos, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(novoMedicamento) });
             if (!resp.ok) throw new Error(`API retornou ${await resp.text()}`);
             formMedicamento.reset();
             carregarPagina(); // Recarrega tudo para atualizar a lista
@@ -132,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
             endereco: document.getElementById('cli-endereco').value || null
         };
         try {
-            const resp = await fetch(apiUrlClientes, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(novoCliente) });
+            const resp = await apiFetch(apiUrlClientes, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(novoCliente) });
             if (!resp.ok) throw new Error(`API retornou ${await resp.text()}`);
             formCliente.reset();
             carregarPagina(); // Recarrega tudo para atualizar a lista
@@ -179,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const url = `${apiUrlVendas}?idCliente=${idCliente}&idMedicamento=${idMedicamento}&quantidade=${quantidade}`;
 
         try {
-            const resp = await fetch(url, { method: 'POST' });
+            const resp = await apiFetch(url, { method: 'POST' });
             if (!resp.ok) throw new Error(`Erro ao registrar venda: ${await resp.text() || resp.statusText}`);
 
             alert('Venda registrada com sucesso!');
@@ -245,7 +355,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    carregarPagina(); // Chama a função principal que inicia tudo
+    if (getToken()) {
+        esconderTelaLogin();
+        carregarPagina(); // Chama a função principal que inicia tudo
+    } else {
+        mostrarTelaLogin();
+    }
 });
 
 // --- LÓGICA DAS ABAS (TABS) ---
