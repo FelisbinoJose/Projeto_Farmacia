@@ -25,12 +25,20 @@ public class Venda {
     private Cliente cliente;
     private int quantidade;
     private LocalDate dataVenda;
+    private int diasConsumo;
+    private LocalDate dataProximaCompra;
 
     public Venda(Medicamento medicamento, Cliente cliente, int quantidade, LocalDate dateVenda) {
         setMedicamento(medicamento);
         setCliente(cliente);
         setQuantidade(quantidade);
         setDate(dateVenda);
+    }
+
+    public Venda(Medicamento medicamento, Cliente cliente, int quantidade, LocalDate dateVenda, int diasConsumo) {
+        this(medicamento, cliente, quantidade, dateVenda);
+        setDiasConsumo(diasConsumo);
+        this.dataProximaCompra = dateVenda.plusDays(diasConsumo);
     }
 
     public void setMedicamento(Medicamento medicamento) {
@@ -50,10 +58,17 @@ public class Venda {
     private static final int MENOR_DO_QUE_ZERO = 0;
 
     public void setQuantidade(int quantidade) {
-        if (quantidade < MENOR_DO_QUE_ZERO) {
+        if (quantidade <= MENOR_DO_QUE_ZERO) {
             throw new IllegalArgumentException("Quantidade de pedido Deve ser maior do que zero.");
         }
         this.quantidade = quantidade;
+    }
+
+    public void setDiasConsumo(int diasConsumo) {
+        if (diasConsumo <= MENOR_DO_QUE_ZERO) {
+            throw new IllegalArgumentException("Dias de consumo deve ser maior do que zero.");
+        }
+        this.diasConsumo = diasConsumo;
     }
 
     public void setDate(LocalDate date) {

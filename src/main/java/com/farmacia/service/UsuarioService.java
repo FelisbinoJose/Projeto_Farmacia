@@ -17,16 +17,21 @@ public class UsuarioService {
     }
 
     public Usuario cadastrar(String username, String senhaTextoPuro) {
-        if (usuarioRepository.existsByUsername(username)) {
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Username nao pode ser nulo ou vazio.");
+        }
+        String usernameNormalizado = username.trim();
+
+        if (usuarioRepository.existsByUsername(usernameNormalizado)) {
             throw new IllegalArgumentException("Já existe um usuário com esse username.");
         }
-        if (senhaTextoPuro == null || senhaTextoPuro.length() < 6) {
-            throw new IllegalArgumentException("A senha deve ter pelo menos 6 caracteres.");
+        if (senhaTextoPuro == null || senhaTextoPuro.length() < 8) {
+            throw new IllegalArgumentException("A senha deve ter pelo menos 8 caracteres.");
         }
 
         // A senha nunca é salva em texto puro: aplicamos o hash BCrypt antes de persistir.
         String senhaCriptografada = passwordEncoder.encode(senhaTextoPuro);
-        Usuario usuario = new Usuario(username, senhaCriptografada, Usuario.Role.USER);
+        Usuario usuario = new Usuario(usernameNormalizado, senhaCriptografada, Usuario.Role.USER);
         return usuarioRepository.save(usuario);
     }
 }

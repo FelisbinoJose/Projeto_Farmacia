@@ -21,11 +21,23 @@ public class Medicamento {
     private String fabricante;
     private double preco;
     private int lote;
+    private int estoque;
+    private int estoqueMinimo = 5;
+    private int diasAlertaValidade = 30;
+    private int diasConsumoPadrao = 30;
+    private String principioAtivo;
     private LocalDate date;
     @Enumerated(EnumType.STRING)
     private Classificacao classificacao;
 
     public Medicamento(String paracetamol, String ems, int i, LocalDate localDate, Classificacao classificacao) {
+        setNomeComercial(paracetamol);
+        setFabricante(ems);
+        setPreco(i);
+        setLote(1);
+        setEstoque(1);
+        setDate(localDate);
+        setClassificacao(classificacao);
     }
 
     public String validar(String txt, String nomeDoCampo) {
@@ -55,6 +67,34 @@ public class Medicamento {
         if (lote <= MENOR_DO_QUE_ZERO)
             throw new IllegalArgumentException("Lote deve ser maior que zero.");
         this.lote = lote;
+    }
+
+    public void setEstoque(int estoque) {
+        if (estoque < MENOR_DO_QUE_ZERO)
+            throw new IllegalArgumentException("Estoque nao pode ser negativo.");
+        this.estoque = estoque;
+    }
+
+    public void setEstoqueMinimo(int estoqueMinimo) {
+        if (estoqueMinimo < MENOR_DO_QUE_ZERO)
+            throw new IllegalArgumentException("Estoque minimo nao pode ser negativo.");
+        this.estoqueMinimo = estoqueMinimo;
+    }
+
+    public void setDiasAlertaValidade(int diasAlertaValidade) {
+        if (diasAlertaValidade < MENOR_DO_QUE_ZERO)
+            throw new IllegalArgumentException("Dias de alerta de validade nao pode ser negativo.");
+        this.diasAlertaValidade = diasAlertaValidade;
+    }
+
+    public void setDiasConsumoPadrao(int diasConsumoPadrao) {
+        if (diasConsumoPadrao <= MENOR_DO_QUE_ZERO)
+            throw new IllegalArgumentException("Dias de consumo padrao deve ser maior que zero.");
+        this.diasConsumoPadrao = diasConsumoPadrao;
+    }
+
+    public void setPrincipioAtivo(String principioAtivo) {
+        this.principioAtivo = principioAtivo == null ? null : principioAtivo.trim();
     }
 
     public void setDate(LocalDate date) {

@@ -1,5 +1,6 @@
 package com.farmacia.controller;
 
+import com.farmacia.dto.AlertaMedicamentoResponse;
 import com.farmacia.model.Medicamento;
 import com.farmacia.service.MedicamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,11 @@ public class MedicamentoController {
     @GetMapping
     public List<Medicamento> listarMedicamentos() {
         return medicamentoService.listarTodos();
+    }
+
+    @GetMapping("/alertas")
+    public List<AlertaMedicamentoResponse> listarAlertas() {
+        return medicamentoService.listarAlertas();
     }
 
     @GetMapping("/{id}")

@@ -4,11 +4,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 import java.util.function.Function;
 
 @Component
@@ -17,12 +20,28 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String secret;
 
-    @Value("${jwt.expiration-ms:86400000}")
+    @Value("${jwt.expiration-ms:900000}")
     private long expirationMs;
+
+    @Value("${jwt.issuer:farmacia-api}")
+    private String issuer;
+
+    @Value("${jwt.audience:farmacia-web}")
+    private String audience;
+
+    @PostConstruct
+    void validarConfiguracao() {
+        if (secret == null || secret.isBlank() || secret.getBytes(StandardCharsets.UTF_8).length < 32) {
+            throw new IllegalStateException("jwt.secret deve ter pelo menos 32 bytes e ser configurado fora do codigo.");
+        }
+        if (expirationMs <= 0) {
+            throw new IllegalStateException("jwt.expiration-ms deve ser maior que zero.");
+        }
+    }
 
     private SecretKey getSigningKey() {
         // A chave precisa ter pelo menos 256 bits para HS256.
-        return Keys.hmacShaKeyFor(secret.getBytes());
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
     public String gerarToken(String username) {
@@ -31,6 +50,9 @@ public class JwtUtil {
 
         return Jwts.builder()
                 .setSubject(username)
+                .setIssuer(issuer)
+                .setAudience(audience)
+                .setId(UUID.randomUUID().toString())
                 .setIssuedAt(agora)
                 .setExpiration(expiracao)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -53,6 +75,8 @@ public class JwtUtil {
     private <T> T extrairClaim(String token, Function<Claims, T> claimsResolver) {
         Claims claims = Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
+                .requireIssuer(issuer)
+                .requireAudience(audience)
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

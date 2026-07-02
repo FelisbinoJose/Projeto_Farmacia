@@ -1,7 +1,14 @@
 package com.farmacia.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class RegistroRequest {
+    @NotBlank
     private String username;
+
+    @NotBlank
+    @Size(min = 8)
     private String senha;
 
     public RegistroRequest() {
